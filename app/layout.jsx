@@ -18,6 +18,11 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
         />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#1f6b4f" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
       </head>
       <body className="flex min-h-screen flex-col font-sans antialiased">
         <Header />
