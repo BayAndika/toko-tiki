@@ -58,19 +58,40 @@ Ubah components/TombolWhatsApp.jsx menjadi tautan yang membuka https://wa.me/ ke
 
 ## US-04 Login admin
 
-**Prompt:**
+**Prompt:** Baca AGENTS.md bagian aturan keamanan dan docs/user-stories.md bagian US-04.
+
+Buat login admin memakai Supabase Auth (email dan password) dengan @supabase/ssr dan cookie, memakai SUPABASE_URL dan SUPABASE_PUBLISHABLE_KEY. Login diproses dengan Server Action di app/admin/actions.js dan disambungkan ke form di app/admin/login/page.jsx. Login berhasil diarahkan ke /admin; login gagal menampilkan pesan error yang jelas di halaman login. Buat juga tombol "Keluar" di components/NavAdmin.jsx berfungsi: mengakhiri sesi lalu kembali ke /admin/login. Jangan ubah tampilan. Hapus CatatanBelumAktif dari halaman login.
 
 **Hasil:**
+- Login admin berhasil dibuat memakai Supabase Auth dengan `@supabase/ssr` dan cookie.
+- Proses login ditangani melalui Server Action `masukAdmin` di `app/admin/actions.js` yang tersambung ke form `app/admin/login/page.jsx`.
+- Login berhasil mengarahkan pengguna ke `/admin`, sedangkan login gagal menampilkan pesan error yang jelas di halaman login.
+- Tombol "Keluar" di `components/NavAdmin.jsx` berfungsi mengakhiri sesi auth dengan `keluarAdmin` Server Action dan kembali ke `/admin/login`.
+- Tampilan form login dan navigasi admin dipertahankan tanpa perubahan visual.
+- `CatatanBelumAktif` telah dihapus dari halaman login.
 
 **Perbaikan:**
+- Membuat modul `lib/supabase/auth.js` menggunakan `createServerClient` dari `@supabase/ssr` dan `cookies` dari `next/headers`.
+- Menghubungkan form login dengan `useActionState` untuk menampilkan pesan kesalahan autentikasi secara interaktif tanpa kehilangan data input formulir.
+- Membungkus tombol "Keluar" dengan `<form action={keluarAdmin}>` agar mengeksekusi Server Action secara bersih tanpa mengubah layout `NavAdmin`.
 
 ## US-05 Ganti password
 
-**Prompt:**
+**Prompt:** Baca docs/user-stories.md bagian US-05.
+
+Buat Server Action ganti password di app/admin/actions.js untuk admin yang sedang login, memakai Supabase Auth. Validasi di server: password baru minimal 8 karakter dan harus sama dengan konfirmasi. Tampilkan pesan berhasil atau pesan error yang jelas di halaman. Sambungkan ke form di app/admin/password/page.jsx tanpa mengubah tampilannya. Hapus CatatanBelumAktif dari halaman ini.
 
 **Hasil:**
+- Server Action `gantiPassword` dibuat di `app/admin/actions.js` dan terhubung dengan form di `app/admin/password/page.jsx`.
+- Melakukan verifikasi login di server (`supabase.auth.getUser()`) sebelum mengganti password.
+- Melakukan validasi server: password baru wajib minimal 8 karakter dan harus cocok dengan konfirmasi password.
+- Menampilkan pesan berhasil jika password berhasil diganti atau pesan error jika validasi/eksekusi gagal.
+- Tampilan form dipertahankan dan `CatatanBelumAktif` telah dihapus.
 
 **Perbaikan:**
+- Mengimplementasikan `updateUser({ password: passwordBaru })` pada Server Action dengan pengecekan sesi aktif admin.
+- Menghubungkan form dengan `useActionState` untuk menampilkan pesan feedback (sukses/gagal) secara reaktif.
+- Menghapus komponen `CatatanBelumAktif` dari `app/admin/password/page.jsx`.
 
 ## US-06 Proteksi halaman admin
 
