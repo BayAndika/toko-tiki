@@ -112,4 +112,18 @@ Buat file proxy.js di root proyek (Next.js 16). Semua rute /admin kecuali /admin
 
 ## Debugging dan fitur bonus
 
-Tambahkan bagian baru untuk setiap error yang kamu perbaiki atau fitur bonus yang kamu kerjakan.
+### US-07 List Produk [SENDIRI]
+
+**Prompt:** Ubah app/admin/page.jsx agar daftar produk pada halaman admin mengambil data langsung dari tabel "produk" di database Supabase secara server-side, bukan memakai lib/data-contoh.js. Tampilkan produk dengan TabelProduk yang sudah ada. Jika gagal mengambil data, tampilkan pesan error yang jelas. Jika tabel kosong, tampilkan tulisan "Belum ada produk". Isi database toko disesuaikan dengan katalog produk plushie brainrot (seperti Plushie Tung Tung Tung Sahur).
+
+**Hasil:**
+- Halaman admin (`/admin`) berhasil memuat dan menampilkan seluruh daftar produk secara dinamis langsung dari tabel `produk` di database Supabase.
+- Tampilan tabel daftar produk menggunakan komponen `TabelProduk` tetap rapi dengan foto, nama, kategori, harga rupiah, dan tombol aksi (Ubah, Hapus).
+- Seluruh isi katalog toko di database diperbarui menjadi tema merchandise plushie brainrot (seperti Plushie Tung Tung Tung Sahur, Plushie Tralalero Tralala, Plushie Skibidi Toilet Sigma, dll.).
+- Halaman tidak lagi bergantung pada data contoh di `lib/data-contoh.js`.
+
+**Perbaikan:**
+- Mengubah fungsi `HalamanAdmin` di `app/admin/page.jsx` menjadi async Server Component dan memanggil Supabase untuk query `.from("produk").select("*").order("id", { ascending: true })`.
+- Menambahkan fallback andal ke `createServerClient()` jika ada kendala pembacaan sesi di server component.
+- Menghapus impor `produkContoh` dari `lib/data-contoh.js`.
+- Memperbarui data produk di Supabase menjadi variasi plushie brainrot yang kreatif dan konsisten.
