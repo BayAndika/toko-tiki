@@ -127,3 +127,19 @@ Buat file proxy.js di root proyek (Next.js 16). Semua rute /admin kecuali /admin
 - Menambahkan fallback andal ke `createServerClient()` jika ada kendala pembacaan sesi di server component.
 - Menghapus impor `produkContoh` dari `lib/data-contoh.js`.
 - Memperbarui data produk di Supabase menjadi variasi plushie brainrot yang kreatif dan konsisten.
+
+### US-08 Tambah produk [SENDIRI]
+
+**Prompt:** Buat fitur tambah produk baru dari halaman admin yang terkunci login. Sambungkan form di app/admin/produk/baru/page.jsx ke Server Action tambahProduk di app/admin/actions.js. Pastikan aksi memeriksa login admin di server sebelum menyimpan ke tabel produk di Supabase. Setelah berhasil, alihkan kembali ke /admin dan perbarui tampilan katalog. Hapus CatatanBelumAktif dari halaman tambah produk.
+
+**Hasil:**
+- Form di `/admin/produk/baru` berhasil menyimpan produk baru ke database Supabase melalui Server Action `tambahProduk`.
+- Aksi tambah produk terlindungi login di server: memverifikasi sesi admin (`supabase.auth.getUser()`) sebelum melakukan operasi insert ke database.
+- Melakukan validasi input nama dan harga (wajib berupa angka valid non-negatif).
+- Setelah produk berhasil disimpan, halaman otomatis dialihkan kembali ke `/admin` dan cache diperbarui dengan `revalidatePath`.
+- Banner `CatatanBelumAktif` telah dihapus dari halaman tambah produk.
+
+**Perbaikan:**
+- Mengembangkan Server Action `tambahProduk` di `app/admin/actions.js` dengan proteksi autentikasi server-side dan validasi input.
+- Memperbarui `components/FormProduk.jsx` agar mendukung props `action`, `state`, dan `isPending` untuk menampilkan pesan feedback dan status pengiriman.
+- Menghubungkan `app/admin/produk/baru/page.jsx` menggunakan `useActionState` dan menghapus komponen `CatatanBelumAktif`.
